@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álbum de Florecillas 2026 - Roberto Espinoza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fbf7f0 0%, #f3ebf6 50%, #e8f3e8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+            color: #5a4b5c;
+        }
+
+        #petal-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            z-index: 10;
+            padding: 0 15px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #8b5b78;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(230, 200, 215, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-family: 'Caveat', cursive;
+            color: #6a836d;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .book-container {
+            position: relative;
+            width: 900px;
+            max-width: 95vw;
+            height: 520px;
+            margin: 20px auto;
+            perspective: 2000px;
+            z-index: 5;
+        }
+
+        .book {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(139, 91, 120, 0.15), 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+        }
+
+        .page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+            background-color: #fffdf9;
+            border: 1px solid #f0e6ed;
+            padding: 25px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .page-left {
+            left: 0;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            border-right: 2px solid #eae0d5;
+            background: linear-gradient(to right, #fbf7f2 0%, #fffdfa 90%, #f0e6dd 100%);
+        }
+
+        .page-right {
+            right: 0;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border-left: none;
+            background: linear-gradient(to left, #fbf7f2 0%, #fffdfa 90%, #eae0d5 100%);
+        }
+
+        .florecilla-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 20px rgba(180, 160, 190, 0.12);
+            border: 2px dashed #e2d4e0;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: radial-gradient(#f7eff5 10%, transparent 11%);
+            background-size: 20px 20px;
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cat-mirar { background-color: #ffe5ec; color: #d66885; }
+        .cat-escuchar { background-color: #e2f0d9; color: #4a7c59; }
+        .cat-elegir { background-color: #e8f1f5; color: #4b7bec; }
+        .cat-actuar { background-color: #fdf0d5; color: #c67d0a; }
+
+        .date-badge {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #7b526b;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e2d4e0;
+            padding-bottom: 5px;
+        }
+
+        .flower-icon {
+            font-size: 2.2rem;
+            margin: 10px 0;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .phrase {
+            font-family: 'Caveat', cursive;
+            font-size: 1.85rem;
+            color: #4a3e4d;
+            line-height: 1.3;
+            margin: 15px 0;
+            padding: 0 10px;
+        }
+
+        .special-note {
+            background-color: #fff8dc;
+            border: 1px solid #f0e68c;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #8b7500;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .page-number {
+            font-size: 0.85rem;
+            color: #a090a2;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 55px;
+            height: 55px;
+            background: #ffffff;
+            border: 2px solid #e2d4e0;
+            border-radius: 50%;
+            color: #8b5b78;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background-color: #f7eff5;
+            color: #5a3b50;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: translateY(-50%) scale(1);
+        }
+
+        #prev-btn { left: -25px; }
+        #next-btn { right: -25px; }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            padding: 8px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2d4e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            font-size: 0.9rem;
+            color: #6a5b6e;
+        }
+
+        .music-btn {
+            background: #8b5b78;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .watermark {
+            width: 1cm;
+            height: 1cm;
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid #d8c2d5;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 6px;
+            font-weight: 800;
+            color: #8b5b78;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            z-index: 100;
+            line-height: 1.1;
+            padding: 1px;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        @media (max-width: 768px) {
+            .book-container {
+                height: 480px;
+            }
+            .page-left {
+                display: none;
+            }
+            .page-right, .page {
+                width: 100%;
+                border-radius: 12px;
+            }
+            #prev-btn { left: 5px; }
+            #next-btn { right: 5px; }
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="petal-canvas"></canvas>
+
+    <!-- Control de Música -->
+    <div class="music-control">
+        <span id="music-status">🎵 Oh, qué será - Willie Colón</span>
+        <button class="music-btn" id="music-toggle">▶</button>
+    </div>
+
+    <!-- Audio con fallback para mayor compatibilidad -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://ia800302.us.archive.org/29/items/willie-colon-oh-que-sera/Willie%20Colon%20-%20Oh%20Que%20Sera.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-10082.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <h1>Álbum de Florecillas 2026</h1>
+        <div class="subtitle">Creado por Roberto Espinoza de 6to. de Secundaria "B"</div>
+    </header>
+
+    <div class="book-container">
+        <button class="nav-btn" id="prev-btn" title="Página Anterior">❮</button>
+        
+        <div class="book">
+            <div class="page page-left" id="page-left-content"></div>
+            <div class="page page-right" id="page-right-content"></div>
+        </div>
+
+        <button class="nav-btn" id="next-btn" title="Página Siguiente">❯</button>
+    </div>
+
+    <div class="watermark">
+        U.E. María Auxiliadora
+    </div>
+
+    <script>
+        const florecillas = [
+            { date: "27 de abril", category: "MIRAR", catClass: "cat-mirar", phrase: "Saluda con alegría a alguien que normalmente ignoras.", icon: "🌸" },
+            { date: "28 de abril", category: "MIRAR", catClass: "cat-mirar", phrase: "Fíjate si algún compañero está solo y acércate con sencillez.", icon: "🌷" },
+            { date: "29 de abril", category: "MIRAR", catClass: "cat-mirar", phrase: "Mira a los ojos cuando alguien te habla.", icon: "🌺" },
+            { date: "30 de abril", category: "MIRAR", catClass: "cat-mirar", phrase: "Descubre algo bueno en otra persona y díselo.", icon: "🌼" },
+            { date: "4 de mayo", category: "ESCUCHAR", catClass: "cat-escuchar", phrase: "Guarda 5 minutos de silencio en tu día.", icon: "🌱" },
+            { date: "5 de mayo", category: "ESCUCHAR", catClass: "cat-escuchar", phrase: "Escucha sin interrumpir cuando alguien habla.", icon: "🌻", note: "Día de Santo Domingo Savio 🕊️" },
+            { date: "6 de mayo", category: "ESCUCHAR", catClass: "cat-escuchar", phrase: "No uses el celular mientras alguien te cuenta algo importante.", icon: "🍃" },
+            { date: "7 de mayo", category: "ESCUCHAR", catClass: "cat-escuchar", phrase: "Lee un pequeño texto del Evangelio.", icon: "📖" },
+            { date: "8 de mayo", category: "ESCUCHAR", catClass: "cat-escuchar", phrase: "Pregunta a alguien: ¿Cómo estás de verdad?", icon: "🌾" },
+            { date: "11 de mayo", category: "ELEGIR", catClass: "cat-elegir", phrase: "Elige decir la verdad, aunque cueste.", icon: "🌹" },
+            { date: "12 de mayo", category: "ELEGIR", catClass: "cat-elegir", phrase: "Elige no hablar mal de alguien.", icon: "🌸", note: "Día de Santa María Mazzarello 💖" },
+            { date: "13 de mayo", category: "ELEGIR", catClass: "cat-elegir", phrase: "Decide terminar una tarea, aunque no tengas ganas.", icon: "🌼" },
+            { date: "14 de mayo", category: "ELEGIR", catClass: "cat-elegir", phrase: "Pide perdón cuando te equivocas.", icon: "🌺" },
+            { date: "15 de mayo", category: "ELEGIR", catClass: "cat-elegir", phrase: "Elige hacer lo correcto, aunque nadie te vea.", icon: "🌷" },
+            { date: "18 de mayo", category: "ACTUAR", catClass: "cat-actuar", phrase: "Participa en la Eucaristía con devoción.", icon: "🙏" },
+            { date: "19 de mayo", category: "ACTUAR", catClass: "cat-actuar", phrase: "Ayuda a alguien concretamente (tarea, trabajo, estudio).", icon: "✨" },
+            { date: "20 de mayo", category: "ACTUAR", catClass: "cat-actuar", phrase: "Da tu tiempo a alguien que lo necesita.", icon: "🌿" },
+            { date: "21 de mayo", category: "ACTUAR", catClass: "cat-actuar", phrase: "Comparte algo tuyo con generosidad.", icon: "🎁" }
+        ];
+
+        let currentPageIndex = 0;
+
+        function createCardHTML(item, pageNum) {
+            if (!item) {
+                return '<div class="florecilla-card" style="justify-content:center;"><p style="color:#b0a0b2; font-style:italic;">Fin del Álbum Mariano 2026<br>¡Que María te acompañe!</p></div>';
+            }
+            
+            return '<div class="florecilla-card">' +
+                '<span class="category-tag ' + item.catClass + '">' + item.category + '</span>' +
+                '<div class="date-badge">' + item.date + '</div>' +
+                '<div class="flower-icon">' + item.icon + '</div>' +
+                '<div class="phrase">"' + item.phrase + '"</div>' +
+                (item.note ? '<div class="special-note">' + item.note + '</div>' : '') +
+            '</div>' +
+            '<div class="page-number">Pág. ' + pageNum + '</div>';
+        }
+
+        function renderPages() {
+            const leftContent = document.getElementById('page-left-content');
+            const rightContent = document.getElementById('page-right-content');
+
+            const leftItem = florecillas[currentPageIndex];
+            const rightItem = florecillas[currentPageIndex + 1];
+
+            leftContent.innerHTML = createCardHTML(leftItem, currentPageIndex + 1);
+            rightContent.innerHTML = createCardHTML(rightItem, currentPageIndex + 2);
+
+            document.getElementById('prev-btn').disabled = (currentPageIndex === 0);
+            document.getElementById('next-btn').disabled = (currentPageIndex + 2 >= florecillas.length);
+        }
+
+        function nextPage() {
+            if (currentPageIndex + 2 < florecillas.length) {
+                currentPageIndex += 2;
+                renderPages();
+            }
+        }
+
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                currentPageIndex -= 2;
+                renderPages();
+            }
+        }
+
+        document.getElementById('next-btn').addEventListener('click', nextPage);
+        document.getElementById('prev-btn').addEventListener('click', prevPage);
+
+        // Control del Audio
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.textContent = '▶';
+                isPlaying = false;
+            } else {
+                music.play().then(function() {
+                    musicBtn.textContent = '⏸';
+                    isPlaying = true;
+                }).catch(function(err) {
+                    console.error("Error reproduciendo audio:", err);
+                    alert("Haz clic en el botón de reproducción tras interactuar con la página.");
+                });
+            }
+        });
+
+        // Animación de Flores
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const petals = [];
+        const petalColors = ['#ffd1dc', '#ffe4e1', '#e8f3e8', '#f3ebf6', '#fff0f5'];
+
+        function Petal() {
+            this.reset();
+        }
+
+        Petal.prototype.reset = function() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * -canvas.height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.6;
+            this.speedX = Math.random() * 0.8 - 0.4;
+            this.color = petalColors[Math.floor(Math.random() * petalColors.length)];
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 2;
+        };
+
+        Petal.prototype.update = function() {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y * 0.01) + this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > canvas.height + 20) {
+                this.reset();
+            }
+        };
+
+        Petal.prototype.draw = function() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, this.size, this.size / 1.8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        };
+
+        for (let i = 0; i < 40; i++) {
+            petals.push(new Petal());
+        }
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < petals.length; i++) {
+                petals[i].update();
+                petals[i].draw();
+            }
+            requestAnimationFrame(animatePetals);
+        }
+
+        renderPages();
+        animatePetals();
+    </script>
+</body>
+</html>
